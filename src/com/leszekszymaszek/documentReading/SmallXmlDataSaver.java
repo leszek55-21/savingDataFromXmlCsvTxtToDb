@@ -65,13 +65,14 @@ public class SmallXmlDataSaver implements XmlDataSaver {
                             if(personDataNode.getNodeType() == Node.ELEMENT_NODE) {
                                 Element personData = (Element) personDataNode;
 
-                                // adding all tags to the list
+                                // adding all tags to the list, later we will check, if list contains age
+                                //tag, because if there will be no age tag, we need to assign null to age
                                 tagNames.add(personData.getTagName());
                             }
                         }
                         // locals vars that will hold name, surname, age and contacts for the customer
-                        String name = "";
-                        String surname = "";
+                        String name = TagNamesAndMessages.EMPTY_STRING;
+                        String surname = TagNamesAndMessages.EMPTY_STRING;
                         String age = null;
                         List<String> phoneList = new ArrayList<>();
                         List<String> emailList = new ArrayList<>();
@@ -84,9 +85,11 @@ public class SmallXmlDataSaver implements XmlDataSaver {
                             Node personDataNode = personDataList.item(j);
 
                             if(personDataNode.getNodeType() == Node.ELEMENT_NODE) {
+
                                 Element personData = (Element) personDataNode;
                                 String tagName = personData.getTagName();
                                 String textContent = personData.getTextContent();
+
                                 if(tagName.equals(TagNamesAndMessages.NAME_TAG)) {
                                     name = textContent;
                                 } else if (tagName.equals(TagNamesAndMessages.SURNAME_TAG)) {
@@ -119,6 +122,7 @@ public class SmallXmlDataSaver implements XmlDataSaver {
                                 }
                             }
                         }
+
                         // saving customer and his contacts using customerDAO and contactDAO
                         // for user output purposes
                         // I assume that excercise requires that customer has at least name and surname
