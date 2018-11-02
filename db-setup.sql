@@ -1,0 +1,28 @@
+DROP DATABASE IF EXISTS `customer_data`;
+CREATE DATABASE `customer_data`;
+USE `customer_data`;
+
+DROP TABLE IF EXISTS `customers`;
+CREATE TABLE `customers` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(64) DEFAULT NULL,
+  `SURNAME` varchar(64) DEFAULT NULL,
+  `Age` int(11) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `customers`;
+CREATE TABLE `customers` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID_CUSTOMER` int(11) DEFAULT NULL,
+  `TYPE` int(11) DEFAULT NULL,
+  `CONTACT` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_id` (`ID_CUSTOMER`),
+  CONSTRAINT `FK_id` FOREIGN KEY (`ID_CUSTOMER`) REFERENCES `customers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
+
