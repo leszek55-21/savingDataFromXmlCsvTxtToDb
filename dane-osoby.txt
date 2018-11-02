@@ -1,2 +1,0 @@
-Jan,Kowalski,12,Lublin,123123123,654 765 765,kowalski@gmail.com,jan@gmail.com
-Adam,Janiak,,Lublin,123123123,adam@gmail.com,12 321,jbr
