@@ -21,7 +21,8 @@ public class Main {
     public static final String STARTING = "Starting...";
     public static final String WELCOME_MESSAGE = "Welcome! This program will allow you " +
             "to read from .csv, .txt, or .xml file and store data to the database.";
-    public static final String ENTER_FILE_PATH = "\nPlease enter valid file path, or press 'q' to exit...";
+    public static final String ENTER_FILE_PATH = "Please enter valid file path, or press 'q' to exit...";
+    public static final String ANYTHING_ELSE = "\nWould you like to do anything else? ";
     public static final String NO_FILE_WRONG_FILE = "No such file, or wrong input file. Try again... ";
     public static final String BYE = "Good Bye!";
 
@@ -37,12 +38,21 @@ public class Main {
         CsvAndTxtDataSaver csvTxt;
         XmlDataSaver xml;
 
+        // for counting do loops
+        Integer counter = 0;
+
         // welcome message
         System.out.println(WELCOME_MESSAGE);
 
         // looping until user decide to leave by pressing "q", or "Q"
         do {
-            System.out.println(ENTER_FILE_PATH);
+            //different message, if we loop more than once
+            if ((counter > 0)) {
+                System.out.println(ANYTHING_ELSE + ENTER_FILE_PATH);
+            } else {
+                System.out.println(ENTER_FILE_PATH);
+            }
+
             filePath = scanner.nextLine();
 
             // breaking the loop if user enters ending string - "q" or "Q"
@@ -80,6 +90,7 @@ public class Main {
             // switch case - selecting right file reader-saver depending on file extension and size
             switch (fileType) {
                 case TagNamesAndMessages.XML_FILE_TYPE:
+
                     if(fileLength > MAX_FILE_SIZE) {
                         xml = new LargeXmlDatSaver();
                     } else {
@@ -87,16 +98,21 @@ public class Main {
                     }
                     System.out.println(STARTING);
                     xml.readAndSaveToDb(filePath);
+                    counter++;
                     break;
                 case TagNamesAndMessages.TXT_FILE_TYPE:
+
                     csvTxt = new CsvAndTxtDataSaver();
                     System.out.println(STARTING);
                     csvTxt.readAndSaveToDb(filePath);
+                    counter++;
                     break;
                 case TagNamesAndMessages.CSV_FILE_TYPE:
+
                     csvTxt = new CsvAndTxtDataSaver();
                     System.out.println(STARTING);
                     csvTxt.readAndSaveToDb(filePath);
+                    counter++;
                     break;
             }
 

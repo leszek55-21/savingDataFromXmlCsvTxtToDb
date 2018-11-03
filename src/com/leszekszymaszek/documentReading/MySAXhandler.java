@@ -25,6 +25,7 @@ public class MySAXhandler extends DefaultHandler {
     private boolean boolPhone;
     private boolean boolJabber;
     private boolean boolOther;
+    private boolean boolPerson;
 
     // fields storing matching tag contents
     private String name;
@@ -55,6 +56,9 @@ public class MySAXhandler extends DefaultHandler {
     @Override
     public void startElement (String uri, String localName,
                               String qName, Attributes attributes) throws SAXException {
+        if(qName.equalsIgnoreCase(TagNamesAndMessages.PERSON_TAG)) {
+            boolPerson = true;
+        }
         // when opening <name> tag found...
         if(qName.equalsIgnoreCase(TagNamesAndMessages.NAME_TAG)) {
             boolName = true;
@@ -104,7 +108,8 @@ public class MySAXhandler extends DefaultHandler {
         // when closing </preson> tag is found...
         if(qName.equalsIgnoreCase(TagNamesAndMessages.PERSON_TAG)) {
 
-            if(name != null && surname != null) {
+            boolPerson = false;
+            if(name != null || surname != null) {
                 // saving customer and do some console output for user
                 if(customerDAO.saveCustomer(name, surname, age)) {
                     System.out.println(TagNamesAndMessages.CUSTOMER_ADDED + name + " " + surname);
@@ -113,7 +118,7 @@ public class MySAXhandler extends DefaultHandler {
                     System.out.println(TagNamesAndMessages.SOMETHING_WENT_WRONG);
                 }
             } else {
-                throw new SAXException(TagNamesAndMessages.WRONG_FILE_FORMAT);
+                System.out.println("Wrong data format. Skipping...");
             }
 
 
@@ -146,37 +151,37 @@ public class MySAXhandler extends DefaultHandler {
 
     @Override
     public void characters (char[] ch, int start, int length) throws SAXException {
-        if(boolName) {
+        if(boolPerson && boolName) {
             name = new String(ch, start, length);
             boolName = false;
         }
-        if(boolSurname) {
+        if(boolPerson && boolSurname) {
             surname = new String(ch, start, length);
             boolSurname = false;
         }
-        if(boolAge) {
+        if(boolPerson && boolAge) {
             age = new String(ch, start, length);
             if(age.equalsIgnoreCase("")) {
                 age = null;
             }
             boolAge = false;
         }
-        if(boolContacts && boolEmail) {
+        if(boolPerson && boolContacts && boolEmail) {
             email = new String(ch, start, length);
             emails.add(email);
             boolEmail = false;
         }
-        if(boolContacts && boolPhone) {
+        if(boolPerson && boolContacts && boolPhone) {
             phone = new String(ch, start, length);
             phones.add(phone);
             boolPhone = false;
         }
-        if(boolContacts && boolJabber) {
+        if(boolPerson && boolContacts && boolJabber) {
             jabber = new String(ch, start, length);
             jabbers.add(jabber);
             boolJabber = false;
         }
-        if(boolContacts && boolOther) {
+        if(boolPerson && boolContacts && boolOther) {
             otherContact = new String(ch, start, length);
             if(!otherContact.trim().equalsIgnoreCase(TagNamesAndMessages.EMPTY_STRING)) {
                 otherContacts.add(otherContact);
